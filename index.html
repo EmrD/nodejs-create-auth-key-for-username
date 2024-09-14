@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Lütfen kullanıcı adınızı girin.</h1>
+    <input type="text" id="username">
+    <script>
+        function handleClick () {
+            const username = document.getElementById("username").value;
+            fetch("/auth", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "username": username
+                },
+            })
+            .then(response => response.text())
+            .then(data => {
+                const oldElement = document.getElementById("auth-key");
+                if (oldElement) {
+                    oldElement.remove();
+                }
+                const element = document.createElement("div");
+                element.id = "auth-key";
+                element.innerHTML = "Your auth key is: " + data;
+                document.body.appendChild(element);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+        </script>
+        <button onclick="handleClick()">Gönder</button>
+</body>
+</html>
